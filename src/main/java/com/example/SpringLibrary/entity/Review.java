@@ -9,13 +9,15 @@ public class Review {
     private Long id;
 
     @Column
-    private Long userId;
-
-    @Column
-    private Long bookId;
-
-    @Column
     private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     public Long getId() {
         return id;
@@ -25,27 +27,27 @@ public class Review {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

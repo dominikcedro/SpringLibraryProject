@@ -28,7 +28,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Book> getBookById(@PathVariable Integer id) {
+    public Optional<Book> getBookById(@PathVariable Long id) {
         return bookRepository.findById(id);
     }
 
@@ -38,7 +38,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Integer id, @RequestBody Book book) {
+    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
         return bookRepository.findById(id)
                 .map(b -> {
                     b.setTitle(book.getTitle());
@@ -50,13 +50,13 @@ public class BookController {
                     return bookRepository.save(b);
                 })
                 .orElseGet(() -> {
-                    book.setBookID((long) id);
+                    book.setBookID(id);
                     return bookRepository.save(book);
                 });
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Integer id) {
+    public void deleteBook(@PathVariable Long id) {
         bookRepository.deleteById(id);
     }
 }

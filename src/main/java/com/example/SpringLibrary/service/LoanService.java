@@ -1,7 +1,9 @@
 package com.example.SpringLibrary.service;
 
 import com.example.SpringLibrary.dto.LoanDTO;
+import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Loan;
+import com.example.SpringLibrary.entity.User;
 import com.example.SpringLibrary.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.Optional;
 public class LoanService {
 
     private final LoanRepository loanRepository;
+    private final UserService userService;
 
     @Autowired
-    public LoanService(LoanRepository loanRepository) {
+    public LoanService(LoanRepository loanRepository, UserService userService) {
         this.loanRepository = loanRepository;
+        this.userService = userService;
     }
 
     public Iterable<Loan> getAllLoans() {
@@ -28,8 +32,13 @@ public class LoanService {
 
     public Loan saveLoan(LoanDTO loanDTO) {
         Loan loan = new Loan();
-        loan.setUserId(loanDTO.getUserId());
-        loan.setBookId(loanDTO.getBookId());
+        User user = userService.getUserById(loanDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        loan.setUser(user);
+
+        Book book = new Book();
+        book.setBookID(loanDTO.getBookId());
+        loan.setBook(book);
+
         loan.setLoanDate(loanDTO.getLoanDate());
         loan.setReturnDate(loanDTO.getReturnDate());
         return loanRepository.save(loan);
@@ -37,8 +46,13 @@ public class LoanService {
 
     public Loan updateLoan(Long id, LoanDTO loanDTO) {
         Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
-        loan.setUserId(loanDTO.getUserId());
-        loan.setBookId(loanDTO.getBookId());
+        User user = userService.getUserById(loanDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        loan.setUser(user);
+
+        Book book = new Book();
+        book.setBookID(loanDTO.getBookId());
+        loan.setBook(book);
+
         loan.setLoanDate(loanDTO.getLoanDate());
         loan.setReturnDate(loanDTO.getReturnDate());
         return loanRepository.save(loan);

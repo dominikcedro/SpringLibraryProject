@@ -2,6 +2,8 @@ package com.example.SpringLibrary.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Book {
     @Id
@@ -19,6 +21,13 @@ public class Book {
     private Integer YearPublished;
     @Column
     private Integer AvaibleCopies;
+
+    @OneToMany(mappedBy = "book")
+    private List<Loan> loans;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getBookID() {
         return BookID;

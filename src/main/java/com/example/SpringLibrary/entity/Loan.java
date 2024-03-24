@@ -10,17 +10,19 @@ public class Loan {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private Long userId;
-
-    @Column
-    private Long bookId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column
     private Date loanDate;
 
     @Column
     private Date returnDate;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     public Long getId() {
         return id;
@@ -30,20 +32,12 @@ public class Loan {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getLoanDate() {
@@ -60,5 +54,13 @@ public class Loan {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

@@ -22,7 +22,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(Integer id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -36,7 +36,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(Integer id, UserDTO userDTO) {
+    public User updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
@@ -46,7 +46,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(Integer id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }

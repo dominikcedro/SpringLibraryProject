@@ -3,6 +3,8 @@ package com.example.SpringLibrary.entity;
 import com.example.SpringLibrary.Role;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class User {
     @Id
@@ -24,6 +26,11 @@ public class User {
     @Column
 
     private String Name;
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loans;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
     public Long getUserID() {
         return UserID;
