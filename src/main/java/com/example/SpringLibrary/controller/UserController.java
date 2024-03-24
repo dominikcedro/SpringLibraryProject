@@ -44,4 +44,3 @@ public class UserController {
         userService.deleteUser(id);
     }
 }
-// TODO: Why role and name are not added to the user via postman?
