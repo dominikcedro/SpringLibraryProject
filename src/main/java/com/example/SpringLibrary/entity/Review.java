@@ -12,11 +12,11 @@ public class Review {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "UserID")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "BookID")
     private Book book;
 
     public Long getId() {

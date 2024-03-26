@@ -26,7 +26,7 @@ public class Book {
     private List<Loan> loans;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "UserID")
     private User user;
 
     public Long getBookID() {

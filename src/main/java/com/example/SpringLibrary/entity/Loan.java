@@ -11,7 +11,7 @@ public class Loan {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "UserID")
     private User user;
 
     @Column
@@ -21,7 +21,7 @@ public class Loan {
     private Date returnDate;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "BookID")
     private Book book;
 
     public Long getId() {
