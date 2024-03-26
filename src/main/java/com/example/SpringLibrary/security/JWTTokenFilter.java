@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JWTTokenFilter extends OncePerRequestFilter {
 
-    public static final String SECRET_KEY = "123456789dfghjhgfds";
+    public static final String SECRET_KEY = "1d+6hDh4bvD29GLzOKnShv9tvaVBvLf+LjVAEI1tGMk=";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -34,9 +34,6 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).build().parseSignedClaims(token).getPayload();
             String id = (String) claims.get("id");
             String role = (String) claims.get("role");
-
-            String username = claims.getSubject();
-            List<String> authorities = (List<String>) claims.get("authorities");
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(id,null,
                     List.of(new SimpleGrantedAuthority(role)));
