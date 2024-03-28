@@ -1,7 +1,6 @@
 package com.example.SpringLibrary;
 
 public enum Role {
-    Reader,
-    Librarian,
-    Admin
+    ROLE_ADMIN,
+    ROLE_USER
 }

@@ -32,7 +32,7 @@ public class LoginController {
         String token = Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + 3600000)) // 1 hour
+                .setExpiration(new Date((new Date()).getTime() + 3600000))
                 .signWith(SignatureAlgorithm.HS256, JWTTokenFilter.SECRET_KEY)
                 .compact();
 

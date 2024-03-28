@@ -10,7 +10,7 @@ import java.security.Key;
 public class JwtVerifier {
 
     public static void main(String[] args) {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTcxMTQ2NDIyMSwiZXhwIjoxNzExNDY3ODIxfQ.0OKUZi08lBvz8UEDcPPalNic39c9LVSOq_lCUi_WV1w"; // replace with your JWT token
+        String token = "  ";
 
         Key key = Keys.hmacShaKeyFor("1d+6hDh4bvD29GLzOKnShv9tvaVBvLf+LjVAEI1tGMk=".getBytes());
 

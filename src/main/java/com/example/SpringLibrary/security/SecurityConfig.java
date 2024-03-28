@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -33,15 +34,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("api/auth/login").permitAll()
-                        .requestMatchers("api/auth/register").hasRole("ADMIN")
-                        .requestMatchers("api/book/**").hasRole("READER")
-                        .requestMatchers("api/loan/**").hasRole("READER")
-                        .requestMatchers("api/review/**").permitAll()
-                        .requestMatchers("api/user/**").hasRole("STAFF"))
+                .authorizeRequests(authorize -> authorize
+                        .anyRequest().permitAll())
                 .build();
     }
 
