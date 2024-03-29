@@ -29,6 +29,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+
     @PostMapping
     public User addUser(@RequestBody UserDTO userDTO) {
         return userService.saveUser(userDTO);

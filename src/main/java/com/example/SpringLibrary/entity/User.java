@@ -9,23 +9,18 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
-    private Long UserID;
+    private Long userID;
     @Column
-
-    private String Username;
+    private String username;
     @Column
-
-    private String Password;
+    private String password;
     @Column
-
     @Enumerated(EnumType.STRING)
-    private Role Role;
+    private Role role;
     @Column
-
-    private String Email;
+    private String email;
     @Column
-
-    private String Name;
+    private String name;
     @OneToMany(mappedBy = "user")
     private List<Loan> loans;
 
@@ -33,50 +28,68 @@ public class User {
     private List<Review> reviews;
 
     public Long getUserID() {
-        return UserID;
+        return userID;
     }
 
     public void setUserID(Long userID) {
-        UserID = userID;
+        this.userID = userID;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        Username = username;
+        this.username = username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public Role getRole() {
-        return Role;
+        return role;
     }
 
     public void setRole(Role role) {
-        Role = role;
+        this.role = role;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+// getters and setters
+
 }
