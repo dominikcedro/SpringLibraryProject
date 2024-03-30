@@ -1,5 +1,6 @@
 package com.example.SpringLibrary.service;
 
+import com.example.SpringLibrary.dto.auth.LoginDTO;
 import com.example.SpringLibrary.dto.auth.RegisterDTO;
 import com.example.SpringLibrary.dto.auth.RegisterResponseDTO;
 import com.example.SpringLibrary.entity.Auth;
@@ -31,5 +32,14 @@ public class AuthService {
 
         Auth createdAuth = authRepository.save(authEntity);
         return new RegisterResponseDTO(createdAuth.getUsername(), createdAuth.getRole(), createdUser.getEmail());
+    }
+    public void login(LoginDTO dto){
+        Auth auth = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        if(!auth.getPassword().equals(dto.getPassword())){
+            throw new RuntimeException("Invalid password");
+        } else {
+            System.out.println("Login successful");
+        }
+
     }
 }
