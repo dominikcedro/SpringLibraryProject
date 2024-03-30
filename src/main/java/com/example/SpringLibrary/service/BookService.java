@@ -18,12 +18,12 @@ public class BookService {
 
     public Book saveBook(BookDTO bookDTO) {
         Book book = new Book();
-        book.setISBN(bookDTO.getIsbn());
+        book.setIsbn(bookDTO.getIsbn());
         book.setTitle(bookDTO.getTitle());
         book.setAuthor(bookDTO.getAuthor());
         book.setPublisher(bookDTO.getPublisher());
         book.setYearPublished(bookDTO.getYearPublished());
-        book.setAvaibleCopies(bookDTO.getAvaibleCopies());
+        book.setAvailableCopies(bookDTO.getAvaibleCopies());
         return bookRepository.save(book);
     }
 }

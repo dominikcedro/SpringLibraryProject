@@ -28,18 +28,18 @@ public class BookDetailsService {
 
     public BookDetails saveBookDetails(BookDetailsDTO bookDetailsDTO) {
         BookDetails bookDetails = new BookDetails();
-        bookDetails.setBookId(bookDetailsDTO.getBookId());
+        bookDetails.setBook_id(bookDetailsDTO.getBookId());
         bookDetails.setAuthor(bookDetailsDTO.getAuthor());
-        bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
+        bookDetails.getPublication_date();
         bookDetails.setSummary(bookDetailsDTO.getSummary());
         return bookDetailsRepository.save(bookDetails);
     }
 
     public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
         BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new RuntimeException("BookDetails not found"));
-        bookDetails.setBookId(bookDetailsDTO.getBookId());
+        bookDetails.setBook_id(bookDetailsDTO.getBookId());
         bookDetails.setAuthor(bookDetailsDTO.getAuthor());
-        bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
+        bookDetails.setPublication_date(bookDetailsDTO.getPublicationDate());
         bookDetails.setSummary(bookDetailsDTO.getSummary());
         return bookDetailsRepository.save(bookDetails);
     }

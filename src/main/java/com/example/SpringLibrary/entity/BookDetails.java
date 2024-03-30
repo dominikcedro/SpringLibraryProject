@@ -3,37 +3,38 @@ package com.example.SpringLibrary.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "book_details", schema = "springlib")
 public class BookDetails {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long book_details_id;
 
     @Column
-    private Long bookId;
+    private Long book_id;
 
     @Column
     private String author;
 
     @Column
-    private String publicationDate;
+    private String publication_date;
 
     @Column
     private String summary;
 
-    public Long getId() {
-        return id;
+    public Long getBook_details_id() {
+        return book_details_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBook_details_id(Long book_details_id) {
+        this.book_details_id = book_details_id;
     }
 
-    public Long getBookId() {
-        return bookId;
+    public Long getBook_id() {
+        return book_id;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setBook_id(Long book_id) {
+        this.book_id = book_id;
     }
 
     public String getAuthor() {
@@ -44,12 +45,12 @@ public class BookDetails {
         this.author = author;
     }
 
-    public String getPublicationDate() {
-        return publicationDate;
+    public String getPublication_date() {
+        return publication_date;
     }
 
-    public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
+    public void setPublication_date(String publication_date) {
+        this.publication_date = publication_date;
     }
 
     public String getSummary() {

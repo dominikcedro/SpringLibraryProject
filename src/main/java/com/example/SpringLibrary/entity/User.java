@@ -4,59 +4,38 @@ import com.example.SpringLibrary.Role;
 import jakarta.persistence.*;
 
 import java.util.List;
-
 @Entity
+@Table(name = "user", schema = "springlib")
 public class User {
+
     @Id
-    @GeneratedValue
-    private Long userID;
-    @Column
-    private String username;
-    @Column
-    private String password;
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Role role;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id",unique = true, nullable = false)
+    private Long id;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
-    @Column
+
+    @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "user")
-    private List<Loan> loans;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Auth auth;
 
-    public Long getUserID() {
-        return userID;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Column(name = "loan")
+    private List<Loan> loan;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Column(name = "review")
+    private List<Review> review;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -75,21 +54,29 @@ public class User {
         this.name = name;
     }
 
-    public List<Loan> getLoans() {
-        return loans;
+    public Auth getAuth() {
+        return auth;
     }
 
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
+    public void setAuth(Auth auth) {
+        this.auth = auth;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
+    public List<Loan> getLoan() {
+        return loan;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public void setLoan(List<Loan> loan) {
+        this.loan = loan;
     }
-// getters and setters
+
+    public List<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(List<Review> review) {
+        this.review = review;
+    }
 
 }
+
