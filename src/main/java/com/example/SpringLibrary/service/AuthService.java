@@ -7,7 +7,9 @@ import com.example.SpringLibrary.dto.auth.RegisterDTO;
 import com.example.SpringLibrary.dto.auth.RegisterResponseDTO;
 import com.example.SpringLibrary.entity.Auth;
 import com.example.SpringLibrary.entity.User;
-import com.example.SpringLibrary.exception.UserAlreadyExistsException;
+import com.example.SpringLibrary.exception.auth.EmailAlreadyExistingException;
+import com.example.SpringLibrary.exception.auth.IncorrectPasswordException;
+import com.example.SpringLibrary.exception.auth.UserAlreadyExistsException;
 import com.example.SpringLibrary.repository.AuthRepository;
 import com.example.SpringLibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,11 @@ public class AuthService {
         if(existingAuth.isPresent()){
             throw UserAlreadyExistsException.create(dto.getUsername());
         }
+        // check if user with email exists
+        Optional<User> existingUser = userRepository.findByEmail(dto.getEmail());
+        if(existingUser.isPresent()){
+            throw EmailAlreadyExistingException.create(dto.getEmail());
+        }
         User userEntity = new User();
         userEntity.setEmail(dto.getEmail());
         User createdUser = userRepository.save(userEntity);
@@ -50,9 +57,16 @@ public class AuthService {
         return new RegisterResponseDTO(createdAuth.getUsername(), createdAuth.getRole(), createdUser.getEmail(), createdUser.getId());
     }
     public LoginResponseDTO login(LoginDTO dto){
+        // check for existing user
+        Optional<Auth> existingAuth = authRepository.findByUsername(dto.getUsername());
+        if(existingAuth.isEmpty()){
+            throw UserAlreadyExistsException.create(dto.getUsername());
+        }
+
         Auth auth = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        // check for correct password
         if(!passwordEncoder.matches(dto.getPassword(), auth.getPassword())){
-            throw new RuntimeException("Invalid password");
+            throw IncorrectPasswordException.create();
         } else {
             System.out.println("Login successful");
         }

@@ -1,10 +1,13 @@
 package com.example.SpringLibrary.controller;
 
 import com.example.SpringLibrary.dto.BookDTO;
+import com.example.SpringLibrary.dto.book.AddBookResponseDTO;
 import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.repository.BookRepository;
 import com.example.SpringLibrary.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +39,9 @@ public class BookController {
     }
 
     @PostMapping
-    public Book addBook(@RequestBody BookDTO bookDTO) {
-        return bookService.saveBook(bookDTO);
+    public ResponseEntity<AddBookResponseDTO> addBook(@RequestBody BookDTO bookDTO) {
+        AddBookResponseDTO response = bookService.addBook(bookDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
