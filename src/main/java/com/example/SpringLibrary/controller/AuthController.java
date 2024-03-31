@@ -1,6 +1,7 @@
 package com.example.SpringLibrary.controller;
 
 import com.example.SpringLibrary.dto.auth.LoginDTO;
+import com.example.SpringLibrary.dto.auth.LoginResponseDTO;
 import com.example.SpringLibrary.dto.auth.RegisterDTO;
 import com.example.SpringLibrary.dto.auth.RegisterResponseDTO;
 import com.example.SpringLibrary.service.AuthService;
@@ -27,7 +28,8 @@ public class AuthController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public void register(@RequestBody LoginDTO requestBody){
-        authService.login(requestBody);
+    public ResponseEntity<LoginResponseDTO> register(@RequestBody LoginDTO requestBody){
+        LoginResponseDTO dto = authService.login(requestBody);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }
