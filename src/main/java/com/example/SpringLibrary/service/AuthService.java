@@ -7,11 +7,14 @@ import com.example.SpringLibrary.dto.auth.RegisterDTO;
 import com.example.SpringLibrary.dto.auth.RegisterResponseDTO;
 import com.example.SpringLibrary.entity.Auth;
 import com.example.SpringLibrary.entity.User;
+import com.example.SpringLibrary.exception.UserAlreadyExistsException;
 import com.example.SpringLibrary.repository.AuthRepository;
 import com.example.SpringLibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -27,6 +30,11 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
     public RegisterResponseDTO register(RegisterDTO dto){
+
+        Optional<Auth> existingAuth = authRepository.findByUsername(dto.getUsername());
+        if(existingAuth.isPresent()){
+            throw UserAlreadyExistsException.create(dto.getUsername());
+        }
         User userEntity = new User();
         userEntity.setEmail(dto.getEmail());
         User createdUser = userRepository.save(userEntity);
