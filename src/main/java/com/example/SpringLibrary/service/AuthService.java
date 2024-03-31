@@ -10,19 +10,21 @@ import com.example.SpringLibrary.entity.User;
 import com.example.SpringLibrary.repository.AuthRepository;
 import com.example.SpringLibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
-
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public AuthService(AuthRepository authRepository, UserRepository userRepository, JwtService jwtService) {
+    public AuthService(AuthRepository authRepository, UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authRepository = authRepository;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
     public RegisterResponseDTO register(RegisterDTO dto){
         User userEntity = new User();
@@ -31,16 +33,17 @@ public class AuthService {
 
         Auth authEntity = new Auth();
         authEntity.setUsername(dto.getUsername());
-        authEntity.setPassword(dto.getPassword());
+        authEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         authEntity.setRole(dto.getRole());
         authEntity.setUser(createdUser);
 
         Auth createdAuth = authRepository.save(authEntity);
-        return new RegisterResponseDTO(createdAuth.getUsername(), createdAuth.getRole(), createdUser.getEmail());
+
+        return new RegisterResponseDTO(createdAuth.getUsername(), createdAuth.getRole(), createdUser.getEmail(), createdUser.getId());
     }
     public LoginResponseDTO login(LoginDTO dto){
         Auth auth = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(!auth.getPassword().equals(dto.getPassword())){
+        if(!passwordEncoder.matches(dto.getPassword(), auth.getPassword())){
             throw new RuntimeException("Invalid password");
         } else {
             System.out.println("Login successful");
