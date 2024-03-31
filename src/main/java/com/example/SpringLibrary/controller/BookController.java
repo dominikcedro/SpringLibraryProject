@@ -5,6 +5,7 @@ import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.repository.BookRepository;
 import com.example.SpringLibrary.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,11 +24,13 @@ public class BookController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_READER')")
     public Iterable<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_READER')")
     public Optional<Book> getBookById(@PathVariable Long id) {
         return bookRepository.findById(id);
     }
