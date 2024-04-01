@@ -4,79 +4,79 @@ import com.example.SpringLibrary.Role;
 import jakarta.persistence.*;
 
 import java.util.List;
-
 @Entity
+@Table(name = "user", schema = "springlib")
 public class User {
+
     @Id
-    @GeneratedValue
-    private Long UserID;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id",unique = true, nullable = false)
+    private Long id;
 
-    private String Username;
-    @Column
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 
-    private String Password;
-    @Column
+    @Column(name = "name")
+    private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Role Role;
-    @Column
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Auth auth;
 
-    private String Email;
-    @Column
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Column(name = "loan")
+    private List<Loan> loan;
 
-    private String Name;
-    @OneToMany(mappedBy = "user")
-    private List<Loan> loans;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Column(name = "review")
+    private List<Review> review;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
-
-    public Long getUserID() {
-        return UserID;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserID(Long userID) {
-        UserID = userID;
-    }
-
-    public String getUsername() {
-        return Username;
-    }
-
-    public void setUsername(String username) {
-        Username = username;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
-    }
-
-    public Role getRole() {
-        return Role;
-    }
-
-    public void setRole(Role role) {
-        Role = role;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
+
+    public Auth getAuth() {
+        return auth;
+    }
+
+    public void setAuth(Auth auth) {
+        this.auth = auth;
+    }
+
+    public List<Loan> getLoan() {
+        return loan;
+    }
+
+    public void setLoan(List<Loan> loan) {
+        this.loan = loan;
+    }
+
+    public List<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(List<Review> review) {
+        this.review = review;
+    }
+
 }
+

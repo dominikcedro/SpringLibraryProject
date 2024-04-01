@@ -36,11 +36,11 @@ public class LoanService {
         loan.setUser(user);
 
         Book book = new Book();
-        book.setBookID(loanDTO.getBookId());
+        book.setBookId(loanDTO.getBookId());
         loan.setBook(book);
 
-        loan.setLoanDate(loanDTO.getLoanDate());
-        loan.setReturnDate(loanDTO.getReturnDate());
+        loan.setLoan_date(loanDTO.getLoanDate());
+        loan.setReturn_date(loanDTO.getReturnDate());
         return loanRepository.save(loan);
     }
 
@@ -50,11 +50,11 @@ public class LoanService {
         loan.setUser(user);
 
         Book book = new Book();
-        book.setBookID(loanDTO.getBookId());
+        book.setBookId(loanDTO.getBookId());
         loan.setBook(book);
 
-        loan.setLoanDate(loanDTO.getLoanDate());
-        loan.setReturnDate(loanDTO.getReturnDate());
+        loan.setLoan_date(loanDTO.getLoanDate());
+        loan.setReturn_date(loanDTO.getReturnDate());
         return loanRepository.save(loan);
     }
 

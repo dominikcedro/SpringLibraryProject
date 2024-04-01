@@ -5,83 +5,101 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "book", schema = "springlib")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long BookID;
-    @Column
-    private String ISBN;
-    @Column
-    private String Title;
-    @Column
-    private String Author;
-    @Column
-    private String Publisher;
-    @Column
-    private Integer YearPublished;
-    @Column
-    private Integer AvaibleCopies;
+    @Column(name = "book_id")
+    private Long bookId;
+    @Column(name = "isbn")
+    private String isbn;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "author")
+    private String author;
+    @Column(name = "publisher")
+    private String publisher;
+    @Column(name = "year_published")
+    private Integer yearPublished;
+    @Column(name = "available_copies")
+    private Integer availableCopies;
 
     @OneToMany(mappedBy = "book")
     private List<Loan> loans;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "UserID")
     private User user;
 
-    public Long getBookID() {
-        return BookID;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setBookID(Long bookID) {
-        BookID = bookID;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
     public String getAuthor() {
-        return Author;
+        return author;
     }
 
     public void setAuthor(String author) {
-        Author = author;
+        this.author = author;
     }
 
     public String getPublisher() {
-        return Publisher;
+        return publisher;
     }
 
     public void setPublisher(String publisher) {
-        Publisher = publisher;
+        this.publisher = publisher;
     }
 
     public Integer getYearPublished() {
-        return YearPublished;
+        return yearPublished;
     }
 
     public void setYearPublished(Integer yearPublished) {
-        YearPublished = yearPublished;
+        this.yearPublished = yearPublished;
     }
 
-    public Integer getAvaibleCopies() {
-        return AvaibleCopies;
+    public Integer getAvailableCopies() {
+        return availableCopies;
     }
 
-    public void setAvaibleCopies(Integer avaibleCopies) {
-        AvaibleCopies = avaibleCopies;
+    public void setAvailableCopies(Integer availableCopies) {
+        this.availableCopies = availableCopies;
+    }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

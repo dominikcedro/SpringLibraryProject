@@ -5,31 +5,32 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "loan", schema = "springlib")
 public class Loan {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long loan_id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column
-    private Date loanDate;
+    private Date loan_date;
 
     @Column
-    private Date returnDate;
+    private Date return_date;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    public Long getId() {
-        return id;
+    public Long getLoan_id() {
+        return loan_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLoan_id(Long loan_id) {
+        this.loan_id = loan_id;
     }
 
     public User getUser() {
@@ -40,20 +41,20 @@ public class Loan {
         this.user = user;
     }
 
-    public Date getLoanDate() {
-        return loanDate;
+    public Date getLoan_date() {
+        return loan_date;
     }
 
-    public void setLoanDate(Date loanDate) {
-        this.loanDate = loanDate;
+    public void setLoan_date(Date loan_date) {
+        this.loan_date = loan_date;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
+    public Date getReturn_date() {
+        return return_date;
     }
 
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
+    public void setReturn_date(Date return_date) {
+        this.return_date = return_date;
     }
 
     public Book getBook() {

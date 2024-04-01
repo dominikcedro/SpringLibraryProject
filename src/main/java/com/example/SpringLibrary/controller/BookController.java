@@ -37,23 +37,6 @@ public class BookController {
         return bookService.saveBook(bookDTO);
     }
 
-    @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        return bookRepository.findById(id)
-                .map(b -> {
-                    b.setTitle(book.getTitle());
-                    b.setAuthor(book.getAuthor());
-                    b.setISBN(book.getISBN());
-                    b.setPublisher(book.getPublisher());
-                    b.setYearPublished(book.getYearPublished());
-                    b.setAvaibleCopies(book.getAvaibleCopies());
-                    return bookRepository.save(b);
-                })
-                .orElseGet(() -> {
-                    book.setBookID(id);
-                    return bookRepository.save(book);
-                });
-    }
 
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id) {

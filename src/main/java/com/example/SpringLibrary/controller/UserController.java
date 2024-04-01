@@ -29,18 +29,15 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+
     @PostMapping
     public User addUser(@RequestBody UserDTO userDTO) {
         return userService.saveUser(userDTO);
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(id, userDTO);
-    }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+        userService.deleteUser(Math.toIntExact(id));
     }
 }
