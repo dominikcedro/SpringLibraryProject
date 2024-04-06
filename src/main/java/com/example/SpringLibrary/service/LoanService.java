@@ -6,10 +6,7 @@ import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Loan;
 import com.example.SpringLibrary.entity.User;
 import com.example.SpringLibrary.exception.auth.UserNotExistingException;
-import com.example.SpringLibrary.exception.loan.IdUserNotExistingException;
-import com.example.SpringLibrary.exception.loan.LoanAlreadyExistingException;
-import com.example.SpringLibrary.exception.loan.LoanBookNotExistingException;
-import com.example.SpringLibrary.exception.loan.LoanLimitExceededException;
+import com.example.SpringLibrary.exception.loan.*;
 import com.example.SpringLibrary.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +63,14 @@ public class LoanService {
 
         Loan loan = new Loan();
         Book book = bookRepository.findById(loanDTO.getBookId()).orElseThrow(() -> new RuntimeException("Book not found"));
+
+        if(book.getAvailableCopies() <= 0){
+            throw NoBooksAvailableException.create(book.getTitle());
+
+        }
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
+        bookRepository.save(book);
+
         loan.setUser(user);
         loan.setBook(book);
         loan.setLoan_date(loanDTO.getLoanDate());
