@@ -1,6 +1,7 @@
 package com.example.SpringLibrary.entity;
 
 import com.example.SpringLibrary.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 @Entity
 @Table(name = "auth", schema = "springlib")
@@ -23,6 +24,7 @@ public class Auth {
     private Role role;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

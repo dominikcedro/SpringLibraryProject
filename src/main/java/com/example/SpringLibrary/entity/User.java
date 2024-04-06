@@ -1,6 +1,7 @@
 package com.example.SpringLibrary.entity;
 
 import com.example.SpringLibrary.Role;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class User {
     private String name;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Auth auth;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -28,6 +30,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Column(name = "review")
+    @JsonManagedReference
     private List<Review> review;
 
     public Long getId() {

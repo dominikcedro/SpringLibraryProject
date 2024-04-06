@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Repository interface for Review entity.
  */
@@ -14,10 +16,11 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     /**
      * Deletes all reviews associated with a given book ID.
      *
-     * @param bookId the ID of the book whose reviews are to be deleted
      */
+    Optional<Review> findByBookBookIdAndUserId(Long bookId, Long userId);
+
     @Modifying
     @Transactional
-    @Query("DELETE FROM Review r WHERE r.book.id = ?1")
+    @Query("DELETE FROM Review r WHERE r.book.bookId = ?1")
     void deleteByBookId(Long bookId);
 }

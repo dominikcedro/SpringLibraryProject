@@ -5,6 +5,7 @@ import com.example.SpringLibrary.dto.ReviewDTO;
 import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Review;
 import com.example.SpringLibrary.entity.User;
+import com.example.SpringLibrary.exception.review.ReviewAlreadyExistingException;
 import com.example.SpringLibrary.repository.BookRepository;
 import com.example.SpringLibrary.repository.ReviewRepository;
 import com.example.SpringLibrary.repository.UserRepository;
@@ -39,6 +40,12 @@ public class ReviewService {
         Optional<Book> existingBook = bookRepository.findById(reviewDTO.getBookId());
         if(existingBook.isEmpty()){
             throw BookNotExistingException.create(reviewDTO.getBookId());
+        }
+
+        // check if review for this book id and user id already exists
+        Optional<Review> existingReview = reviewRepository.findByBookBookIdAndUserId(reviewDTO.getBookId(), reviewDTO.getUserId());
+        if(existingReview.isPresent()){
+            throw ReviewAlreadyExistingException.create(reviewDTO.getBookId(), reviewDTO.getUserId());
         }
 
         Review review = new Review();
