@@ -11,6 +11,15 @@ public class UserDTO {
     private Role role;
     private String name;
 
+    private int loanCount;
+
+    public int getLoanCount() {
+        return loanCount;
+    }
+
+    public void setLoanCount(int loanCount) {
+        this.loanCount = loanCount;
+    }
 
     // getters and setters
     public Long getId() {

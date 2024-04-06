@@ -1,5 +1,6 @@
 package com.example.SpringLibrary.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class Book {
     private Integer availableCopies;
 
     @OneToMany(mappedBy = "book")
+    @JsonManagedReference
     private List<Loan> loans;
 
     @ManyToOne

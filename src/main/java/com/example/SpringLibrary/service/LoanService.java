@@ -1,6 +1,7 @@
 package com.example.SpringLibrary.service;
 
 import com.example.SpringLibrary.dto.LoanDTO;
+import com.example.SpringLibrary.dto.UserDTO;
 import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Loan;
 import com.example.SpringLibrary.entity.User;
@@ -8,9 +9,11 @@ import com.example.SpringLibrary.exception.auth.UserNotExistingException;
 import com.example.SpringLibrary.exception.loan.IdUserNotExistingException;
 import com.example.SpringLibrary.exception.loan.LoanAlreadyExistingException;
 import com.example.SpringLibrary.exception.loan.LoanBookNotExistingException;
+import com.example.SpringLibrary.exception.loan.LoanLimitExceededException;
 import com.example.SpringLibrary.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.SpringLibrary.repository.BookRepository;
 
 import java.util.Optional;
 
@@ -19,11 +22,14 @@ public class LoanService {
 
     private final LoanRepository loanRepository;
     private final UserService userService;
+    private final BookRepository bookRepository;
+
 
     @Autowired
-    public LoanService(LoanRepository loanRepository, UserService userService) {
+    public LoanService(LoanRepository loanRepository, UserService userService, BookRepository bookRepository) {
         this.loanRepository = loanRepository;
         this.userService = userService;
+        this.bookRepository = bookRepository;
     }
 
     public Iterable<Loan> getAllLoans() {
@@ -41,28 +47,37 @@ public class LoanService {
             throw LoanAlreadyExistingException.create(loanDTO.getBookId(), loanDTO.getUserId());
         }
         // check if book for this loan with book id exists, if not throw exception
-        Optional<Loan> existingLoan1 = loanRepository.findByBookBookIdAndUserId(loanDTO.getBookId(), loanDTO.getUserId());
+        Optional<Book> existingLoan1 = bookRepository.findByBookId(loanDTO.getBookId());
         if(existingLoan1.isEmpty()){
             throw LoanBookNotExistingException.create(loanDTO.getBookId());
         }
 
-        // check wheter user with said id exists
+        // check whether user with said id exists
         Optional<User> existingUser = userService.getUserById(loanDTO.getUserId());
         if(existingUser.isEmpty()){
             throw IdUserNotExistingException.create(loanDTO.getUserId());
         }
 
-        Loan loan = new Loan();
+        // check if user has more than 5 loans (limit)
         User user = userService.getUserById(loanDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        if(user.getLoanCount() >= 5){
+            throw LoanLimitExceededException.create(loanDTO.getUserId());
+        }
+
+        Loan loan = new Loan();
+        Book book = bookRepository.findById(loanDTO.getBookId()).orElseThrow(() -> new RuntimeException("Book not found"));
         loan.setUser(user);
-
-        Book book = new Book();
-        book.setBookId(loanDTO.getBookId());
         loan.setBook(book);
-
         loan.setLoan_date(loanDTO.getLoanDate());
         loan.setReturn_date(loanDTO.getReturnDate());
-        return loanRepository.save(loan);
+
+        Loan savedLoan = loanRepository.save(loan);
+
+        user.setLoanCount(user.getLoanCount() + 1);
+        UserDTO userDTO = userService.convertToUserDTO(user);
+        userService.updateUser(user.getId(), userDTO);
+
+        return savedLoan;
     }
 
     public Loan updateLoan(Long id, LoanDTO loanDTO) {
@@ -80,6 +95,16 @@ public class LoanService {
     }
 
     public void deleteLoan(Long id) {
+        Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
+        User user = loan.getUser();
+
+        // decrement user's loanCount and save user
+        user.setLoanCount(user.getLoanCount() - 1);
+        UserDTO userDTO = userService.convertToUserDTO(user);
+        userService.saveUser(userDTO);
+
         loanRepository.deleteById(id);
     }
+
+
 }

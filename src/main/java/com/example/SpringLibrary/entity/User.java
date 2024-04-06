@@ -20,6 +20,9 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "loan_count", nullable = false)
+    private int loanCount=0;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Auth auth;
@@ -33,6 +36,14 @@ public class User {
     @Column(name = "review")
     @JsonManagedReference
     private List<Review> review;
+
+    public int getLoanCount() {
+        return loanCount;
+    }
+
+    public void setLoanCount(int loanCount) {
+        this.loanCount = loanCount;
+    }
 
     public Long getId() {
         return id;

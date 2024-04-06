@@ -39,6 +39,11 @@ public class UserService {
         Auth auth = new Auth();
         auth.setUsername(userDTO.getUsername());
         auth.setPassword(userDTO.getPassword());
+
+        if (userDTO.getRole() == null) {
+            throw new IllegalArgumentException("Role cannot be null");
+        }
+
         auth.setRole(userDTO.getRole());
         auth.setUser(user);
 
@@ -65,5 +70,16 @@ public class UserService {
 
     public void deleteUser(Integer id) {
         userRepository.deleteById(Long.valueOf(id));
+    }
+    public UserDTO convertToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getAuth().getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPassword(user.getAuth().getPassword());
+        userDTO.setName(user.getName());
+        userDTO.setRole(user.getAuth().getRole());
+        userDTO.setLoanCount(user.getLoanCount());
+        return userDTO;
     }
 }
