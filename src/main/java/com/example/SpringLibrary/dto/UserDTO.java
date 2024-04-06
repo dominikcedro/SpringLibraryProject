@@ -9,8 +9,6 @@ public class UserDTO {
     private String email;
     private String password;
     private Role role;
-    private String name;
-
     private int loanCount;
 
     public int getLoanCount() {
@@ -54,13 +52,6 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Role getRole() {
         return role;

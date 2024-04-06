@@ -34,7 +34,6 @@ public class UserService {
         User user = new User();
         user.setId(userDTO.getId());
         user.setEmail(userDTO.getEmail());
-        user.setName(userDTO.getName());
 
         Auth auth = new Auth();
         auth.setUsername(userDTO.getUsername());
@@ -58,7 +57,6 @@ public class UserService {
         Auth auth = user.getAuth();
 
         user.setEmail(userDTO.getEmail());
-        user.setName(userDTO.getName());
 
         auth.setUsername(userDTO.getUsername());
         auth.setPassword(userDTO.getPassword());
@@ -77,7 +75,6 @@ public class UserService {
         userDTO.setUsername(user.getAuth().getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getAuth().getPassword());
-        userDTO.setName(user.getName());
         userDTO.setRole(user.getAuth().getRole());
         userDTO.setLoanCount(user.getLoanCount());
         return userDTO;

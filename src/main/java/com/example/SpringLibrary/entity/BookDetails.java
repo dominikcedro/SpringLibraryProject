@@ -9,17 +9,53 @@ public class BookDetails {
     @GeneratedValue
     private Long book_details_id;
 
-    @Column
-    private Long book_id;
+    @OneToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     @Column
-    private String author;
+    private String origin_country;
 
     @Column
-    private String publication_date;
+    private String category;
+
+    @Column
+    private String author_summary;
 
     @Column
     private String summary;
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book_id) {
+        this.book = book_id;
+    }
+
+    public String getOrigin_country() {
+        return origin_country;
+    }
+
+    public void setOrigin_country(String origin_country) {
+        this.origin_country = origin_country;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAuthor_summary() {
+        return author_summary;
+    }
+
+    public void setAuthor_summary(String author_summary) {
+        this.author_summary = author_summary;
+    }
 
     public Long getBook_details_id() {
         return book_details_id;
@@ -27,30 +63,6 @@ public class BookDetails {
 
     public void setBook_details_id(Long book_details_id) {
         this.book_details_id = book_details_id;
-    }
-
-    public Long getBook_id() {
-        return book_id;
-    }
-
-    public void setBook_id(Long book_id) {
-        this.book_id = book_id;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublication_date() {
-        return publication_date;
-    }
-
-    public void setPublication_date(String publication_date) {
-        this.publication_date = publication_date;
     }
 
     public String getSummary() {

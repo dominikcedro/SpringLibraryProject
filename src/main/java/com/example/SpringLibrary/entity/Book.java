@@ -33,6 +33,17 @@ public class Book {
     @JoinColumn(name = "UserID")
     private User user;
 
+    @OneToOne(mappedBy = "book")
+    private BookDetails bookDetails;
+
+    public BookDetails getBookDetails() {
+        return bookDetails;
+    }
+
+    public void setBookDetails(BookDetails bookDetails) {
+        this.bookDetails = bookDetails;
+    }
+
     public Long getBookId() {
         return bookId;
     }
