@@ -1,5 +1,6 @@
 package com.example.SpringLibrary.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +11,7 @@ public class BookDetails {
     private Long book_details_id;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "book_id")
     private Book book;
 

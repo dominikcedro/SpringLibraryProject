@@ -34,6 +34,7 @@ public class Book {
     private User user;
 
     @OneToOne(mappedBy = "book")
+    @JsonManagedReference
     private BookDetails bookDetails;
 
     public BookDetails getBookDetails() {
