@@ -100,13 +100,20 @@ public class LoanService {
     }
 
     public void deleteLoan(Long id) {
+
         Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
         User user = loan.getUser();
 
         // decrement user's loanCount and save user
         user.setLoanCount(user.getLoanCount() - 1);
         UserDTO userDTO = userService.convertToUserDTO(user);
-        userService.saveUser(userDTO);
+        userService.updateUser(user.getId(), userDTO);
+
+        // increment book's availableCopies and save book
+        Book book = loan.getBook();
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+        bookRepository.save(book);
+
 
         loanRepository.deleteById(id);
     }

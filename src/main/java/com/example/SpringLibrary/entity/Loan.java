@@ -9,7 +9,9 @@ import java.util.Date;
 @Table(name = "loan", schema = "springlib")
 public class Loan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "loan_seq")
+    @SequenceGenerator(name = "loan_seq", sequenceName = "loan_seq", allocationSize = 1)
+
     private Long loan_id;
 
     @ManyToOne
