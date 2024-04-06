@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+// for deleting reviews
+import com.example.SpringLibrary.repository.ReviewRepository;
+
 
 import java.util.Optional;
 
@@ -19,6 +22,8 @@ public class BookController {
 
     private final BookService bookService;
     private final BookRepository bookRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     public BookController(BookService bookService, BookRepository bookRepository) {
@@ -46,7 +51,9 @@ public class BookController {
 
 
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
+    public void deleteBook(@PathVariable Long id)
+    {    reviewRepository.deleteByBookId(id);
+
         bookRepository.deleteById(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.SpringLibrary.service;
 
+import com.example.SpringLibrary.dto.BookDTO;
 import com.example.SpringLibrary.dto.ReviewDTO;
 import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Review;
@@ -9,6 +10,8 @@ import com.example.SpringLibrary.repository.ReviewRepository;
 import com.example.SpringLibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+// exception handling
+import com.example.SpringLibrary.exception.review.BookNotExistingException;
 
 import java.util.Optional;
 
@@ -32,19 +35,21 @@ public class ReviewService {
     public Optional<Review> getReviewById(Long id) {
         return reviewRepository.findById(id);
     }
-
     public Review saveReview(ReviewDTO reviewDTO) {
+        Optional<Book> existingBook = bookRepository.findById(reviewDTO.getBookId());
+        if(existingBook.isEmpty()){
+            throw BookNotExistingException.create(reviewDTO.getBookId());
+        }
+
         Review review = new Review();
 
         User user = userRepository.findById(reviewDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         review.setUser(user);
 
-        Book book = bookRepository.findById(reviewDTO.getBookId()).orElseThrow(() -> new RuntimeException("Book not found"));
-        review.setBook(book);
+        review.setBook(existingBook.get());
 
         review.setContent(reviewDTO.getContent());
         return reviewRepository.save(review);
-
     }
 
     public Review updateReview(Long id, ReviewDTO reviewDTO) {
