@@ -6,6 +6,7 @@ import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Review;
 import com.example.SpringLibrary.entity.User;
 import com.example.SpringLibrary.exception.review.ReviewAlreadyExistingException;
+import com.example.SpringLibrary.exception.review.ReviewNotExistingException;
 import com.example.SpringLibrary.repository.BookRepository;
 import com.example.SpringLibrary.repository.ReviewRepository;
 import com.example.SpringLibrary.repository.UserRepository;
@@ -60,7 +61,8 @@ public class ReviewService {
     }
 
     public Review updateReview(Long id, ReviewDTO reviewDTO) {
-        Review review = reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("Review not found"));
+
+        Review review = reviewRepository.findById(id).orElseThrow(() -> ReviewNotExistingException.create(id));
 
         User user = userRepository.findById(reviewDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         review.setUser(user);

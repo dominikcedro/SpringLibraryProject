@@ -26,6 +26,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Column(name = "loan")
+    @JsonManagedReference
     private List<Loan> loan;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
