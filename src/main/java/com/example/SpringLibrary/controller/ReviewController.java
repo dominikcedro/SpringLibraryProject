@@ -107,7 +107,6 @@ public class ReviewController {
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB') or hasRole('ROLE_READER')")
-    public void deleteReview(@PathVariable Long id) {
-        reviewService.deleteReview(id);
+    public void deleteReview(@PathVariable Long id) {reviewService.deleteReview(id);
     }
 }

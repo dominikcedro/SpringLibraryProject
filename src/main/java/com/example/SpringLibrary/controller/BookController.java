@@ -65,12 +65,14 @@ public class BookController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')")
+    public Book updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
+        return bookService.updateBook(id, bookDTO);
+    }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')")
-    public void deleteBook(@PathVariable Long id)
-    {    reviewRepository.deleteByBookId(id);
-
-        bookRepository.deleteById(id);
+    public void deleteBook(@PathVariable Long id) { bookService.deleteBook(id); }
     }
-}
