@@ -1,6 +1,7 @@
 package com.example.SpringLibrary.entity;
 
 import com.example.SpringLibrary.Role;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,19 +17,31 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "name")
-    private String name;
+
+    @Column(name = "loan_count", nullable = false)
+    private int loanCount=0;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Auth auth;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Column(name = "loan")
+    @JsonManagedReference
     private List<Loan> loan;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Column(name = "review")
+    @JsonManagedReference
     private List<Review> review;
+
+    public int getLoanCount() {
+        return loanCount;
+    }
+
+    public void setLoanCount(int loanCount) {
+        this.loanCount = loanCount;
+    }
 
     public Long getId() {
         return id;
@@ -44,14 +57,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Auth getAuth() {

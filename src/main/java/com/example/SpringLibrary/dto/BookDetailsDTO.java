@@ -3,9 +3,35 @@ package com.example.SpringLibrary.dto;
 public class BookDetailsDTO {
     private Long id;
     private Long bookId;
-    private String author;
-    private String publicationDate;
+    private String origin_country;
+
+    private String category;
+    private String author_summary;
     private String summary;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getOrigin_country() {
+        return origin_country;
+    }
+
+    public void setOrigin_country(String origin_country) {
+        this.origin_country = origin_country;
+    }
+
+    public String getAuthor_summary() {
+        return author_summary;
+    }
+
+    public void setAuthor_summary(String author_summary) {
+        this.author_summary = author_summary;
+    }
 
     public Long getId() {
         return id;
@@ -21,22 +47,6 @@ public class BookDetailsDTO {
 
     public void setBookId(Long bookId) {
         this.bookId = bookId;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublicationDate() {
-        return publicationDate;
-    }
-
-    public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
     }
 
     public String getSummary() {

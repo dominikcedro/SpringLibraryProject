@@ -1,5 +1,6 @@
 package com.example.SpringLibrary.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -8,11 +9,14 @@ import java.util.Date;
 @Table(name = "loan", schema = "springlib")
 public class Loan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "loan_seq")
+    @SequenceGenerator(name = "loan_seq", sequenceName = "loan_seq", allocationSize = 1)
+
     private Long loan_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @Column
@@ -23,6 +27,7 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
+    @JsonBackReference
     private Book book;
 
     public Long getLoan_id() {

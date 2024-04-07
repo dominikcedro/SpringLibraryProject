@@ -7,41 +7,66 @@ import com.example.SpringLibrary.dto.auth.RegisterDTO;
 import com.example.SpringLibrary.dto.auth.RegisterResponseDTO;
 import com.example.SpringLibrary.entity.Auth;
 import com.example.SpringLibrary.entity.User;
+import com.example.SpringLibrary.exception.auth.EmailAlreadyExistingException;
+import com.example.SpringLibrary.exception.auth.IncorrectPasswordException;
+import com.example.SpringLibrary.exception.auth.UserAlreadyExistsException;
 import com.example.SpringLibrary.repository.AuthRepository;
 import com.example.SpringLibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
-
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public AuthService(AuthRepository authRepository, UserRepository userRepository, JwtService jwtService) {
+    public AuthService(AuthRepository authRepository, UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authRepository = authRepository;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
     public RegisterResponseDTO register(RegisterDTO dto){
+
+        Optional<Auth> existingAuth = authRepository.findByUsername(dto.getUsername());
+        if(existingAuth.isPresent()){
+            throw UserAlreadyExistsException.create(dto.getUsername());
+        }
+        // check if user with email exists
+        Optional<User> existingUser = userRepository.findByEmail(dto.getEmail());
+        if(existingUser.isPresent()){
+            throw EmailAlreadyExistingException.create(dto.getEmail());
+        }
         User userEntity = new User();
         userEntity.setEmail(dto.getEmail());
         User createdUser = userRepository.save(userEntity);
 
         Auth authEntity = new Auth();
         authEntity.setUsername(dto.getUsername());
-        authEntity.setPassword(dto.getPassword());
+        authEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         authEntity.setRole(dto.getRole());
         authEntity.setUser(createdUser);
 
         Auth createdAuth = authRepository.save(authEntity);
-        return new RegisterResponseDTO(createdAuth.getUsername(), createdAuth.getRole(), createdUser.getEmail());
+
+        return new RegisterResponseDTO(createdAuth.getUsername(), createdAuth.getRole(), createdUser.getEmail(), createdUser.getId());
     }
     public LoginResponseDTO login(LoginDTO dto){
+        // check for existing user
+        Optional<Auth> existingAuth = authRepository.findByUsername(dto.getUsername());
+        if(existingAuth.isEmpty()){
+            throw UserAlreadyExistsException.create(dto.getUsername());
+        }
+
         Auth auth = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(!auth.getPassword().equals(dto.getPassword())){
-            throw new RuntimeException("Invalid password");
+        // check for correct password
+        if(!passwordEncoder.matches(dto.getPassword(), auth.getPassword())){
+            throw IncorrectPasswordException.create();
         } else {
             System.out.println("Login successful");
         }

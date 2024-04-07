@@ -1,20 +1,17 @@
-package com.example.SpringLibrary.dto;
+package com.example.SpringLibrary.dto.book;
 
-public class BookDTO {
-    private Long id;
+public class AddBookResponseDTO {
 
     private String isbn;
     private String title;
     private String author;
     private String publisher;
-    private Integer yearPublished;
-    private Integer avaibleCopies;
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
+    public AddBookResponseDTO(String isbn, String title, String author, String publisher) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
     }
 
     public String getIsbn() {
@@ -47,21 +44,5 @@ public class BookDTO {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
-    }
-
-    public Integer getYearPublished() {
-        return yearPublished;
-    }
-
-    public void setYearPublished(Integer yearPublished) {
-        this.yearPublished = yearPublished;
-    }
-
-    public Integer getAvaibleCopies() {
-        return avaibleCopies;
-    }
-
-    public void setAvaibleCopies(Integer avaibleCopies) {
-        this.avaibleCopies = avaibleCopies;
     }
 }
