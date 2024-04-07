@@ -7,12 +7,13 @@ import com.example.SpringLibrary.dto.auth.RegisterDTO;
 import com.example.SpringLibrary.dto.auth.RegisterResponseDTO;
 import com.example.SpringLibrary.entity.Auth;
 import com.example.SpringLibrary.entity.User;
-import com.example.SpringLibrary.exception.auth.EmailAlreadyExistingException;
-import com.example.SpringLibrary.exception.auth.IncorrectPasswordException;
-import com.example.SpringLibrary.exception.auth.UserAlreadyExistsException;
+import com.example.SpringLibrary.exception.auth.*;
 import com.example.SpringLibrary.repository.AuthRepository;
 import com.example.SpringLibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,16 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
     public RegisterResponseDTO register(RegisterDTO dto){
+        // Get the role of the currently authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Auth currentAuth = authRepository.findByUsername(currentPrincipalName)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + currentPrincipalName));
+        Role currentRole = currentAuth.getRole();
 
+        if (currentRole == Role.ROLE_MOD && dto.getRole() == Role.ROLE_ADMIN) {
+            throw ModCreateAdminException.create(currentRole.toString(), dto.getRole().toString());
+        }
         Optional<Auth> existingAuth = authRepository.findByUsername(dto.getUsername());
         if(existingAuth.isPresent()){
             throw UserAlreadyExistsException.create(dto.getUsername());
@@ -60,7 +70,7 @@ public class AuthService {
         // check for existing user
         Optional<Auth> existingAuth = authRepository.findByUsername(dto.getUsername());
         if(existingAuth.isEmpty()){
-            throw UserAlreadyExistsException.create(dto.getUsername());
+            throw UserNotExistingException.create(dto.getUsername());
         }
 
         Auth auth = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
