@@ -17,6 +17,7 @@ import com.example.SpringLibrary.repository.ReviewRepository;
 import java.util.Optional;
 
 @RestController
+@RestControllerAdvice
 @RequestMapping("/books")
 public class BookController {
 
