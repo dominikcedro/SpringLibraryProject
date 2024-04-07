@@ -38,6 +38,14 @@ public class BookController {
         this.bookRepository = bookRepository;
     }
 
+    @Operation(summary = "Get all books")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the books",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class)) }),
+            @ApiResponse(responseCode = "404", description = "Books not found",
+                    content = @Content)
+    })
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')or hasRole('ROLE_READER')")
     public Iterable<Book> getAllBooks() {
@@ -65,13 +73,33 @@ public class BookController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')")
+    @Operation(summary = "Update a book by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated the book",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content)
+    })
     public Book updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
         return bookService.updateBook(id, bookDTO);
     }
 
 
+    @Operation(summary = "Delete a book by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Deleted the book",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content)
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')")
     public void deleteBook(@PathVariable Long id) { bookService.deleteBook(id); }

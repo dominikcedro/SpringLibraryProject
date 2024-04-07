@@ -3,6 +3,7 @@ package com.example.SpringLibrary.service;
 import com.example.SpringLibrary.dto.BookDetailsDTO;
 import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.BookDetails;
+import com.example.SpringLibrary.exception.book.BookNotExistingException;
 import com.example.SpringLibrary.repository.BookDetailsRepository;
 import com.example.SpringLibrary.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ public class BookDetailsService {
     }
 
     public BookDetails saveBookDetails(BookDetailsDTO bookDetailsDTO) {
-
         // get Book entity to input to BookDetails
         Book book = bookRepository.findById(bookDetailsDTO.getBookId()).orElseThrow(() -> new RuntimeException("Book not found"));
 
