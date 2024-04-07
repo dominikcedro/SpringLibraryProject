@@ -4,6 +4,7 @@ import com.example.SpringLibrary.dto.BookDTO;
 import com.example.SpringLibrary.dto.book.AddBookResponseDTO;
 import com.example.SpringLibrary.entity.Book;
 import com.example.SpringLibrary.entity.Review;
+import com.example.SpringLibrary.exception.book.BookAlreadyExistsException;
 import com.example.SpringLibrary.exception.review.ReviewAlreadyExistingException;
 import com.example.SpringLibrary.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,11 @@ public class BookService {
 
     public AddBookResponseDTO addBook(BookDTO bookDTO) {
 
-        Optional<Book> existingReview = bookRepository.findByBookId(bookDTO.getBookId());
+        Optional<Book> existingReview = bookRepository.findByisbn(bookDTO.getIsbn());
         if(existingReview.isPresent()){
-            throw ReviewAlreadyExistingException.create(reviewDTO.getBookId(), reviewDTO.getUserId());
+            throw BookAlreadyExistsException.create(bookDTO.getIsbn());
         }
+
         Book book = new Book();
         book.setIsbn(bookDTO.getIsbn());
         book.setTitle(bookDTO.getTitle());
@@ -37,5 +39,9 @@ public class BookService {
         book.setAvailableCopies(bookDTO.getAvaibleCopies());
         Book createdBook = bookRepository.save(book);
         return new AddBookResponseDTO(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublisher());
+    }
+
+    public Book getBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElse(null);
     }
 }
