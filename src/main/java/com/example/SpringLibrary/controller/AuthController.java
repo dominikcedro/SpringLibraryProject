@@ -24,8 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-//    @PreAuthorize("hasRole('ROLE_ADMIN' or 'ROLE_MOD')")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterDTO requestBody){
         RegisterResponseDTO dto = authService.register(requestBody);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);

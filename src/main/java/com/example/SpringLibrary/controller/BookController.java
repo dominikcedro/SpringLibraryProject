@@ -32,18 +32,20 @@ public class BookController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_READER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')or hasRole('ROLE_READER')")
     public Iterable<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_READER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')or hasRole('ROLE_READER')")
     public Optional<Book> getBookById(@PathVariable Long id) {
         return bookRepository.findById(id);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')")
+
     public ResponseEntity<AddBookResponseDTO> addBook(@RequestBody BookDTO bookDTO) {
         AddBookResponseDTO response = bookService.addBook(bookDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -51,6 +53,8 @@ public class BookController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD')or hasRole('ROLE_LIB')")
+
     public void deleteBook(@PathVariable Long id)
     {    reviewRepository.deleteByBookId(id);
 
